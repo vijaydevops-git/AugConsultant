@@ -1,0 +1,160 @@
+    # Main application
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+        proxy_read_timeout 86400;
+    }
+
+    # Health check endpoint
+    location /health {
+        access_log off;
+        return 200 "healthy\n";
+        add_header Content-Type text/plain;
+    }
+}
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+Synchronizing state of nginx.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable nginx
+ℹ️  No domain configured - using HTTP only
+🔥 Configuring firewall...
+Firewall is active and enabled on system startup
+Rule added
+Rule added (v6)
+Rule added
+Rule added (v6)
+📊 Creating backup script...
+#!/bin/bash
+DATE=$(date +%Y%m%d_%H%M%S)
+BACKUP_DIR="/home/ubuntu/backups"
+mkdir -p $BACKUP_DIR
+
+# Create database backup
+PGPASSWORD="MonDad@2022!" pg_dump -h localhost -U tracker_user consultant_tracker > $BACKUP_DIR/backup_$DATE.sql
+
+# Keep only last 7 days of backups
+find $BACKUP_DIR -name "backup_*.sql" -mtime +7 -delete
+
+echo "Database backup completed: backup_$DATE.sql"
+🎯 Creating monitoring script...
+#!/bin/bash
+
+echo "=== Application Status ==="
+pm2 status
+
+echo -e "\n=== Service Status ==="
+sudo systemctl status nginx --no-pager -l
+sudo systemctl status postgresql --no-pager -l
+
+echo -e "\n=== Disk Usage ==="
+df -h
+
+echo -e "\n=== Memory Usage ==="
+free -m
+
+echo -e "\n=== Recent Application Logs ==="
+pm2 logs consultant-tracker --lines 10 --nostream
+
+echo -e "\n=== Application URL ==="
+echo "http://$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)"
+✅ Deployment completed successfully!
+
+🎯 Application Details:
+   URL: http://<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <head>
+  <title>401 - Unauthorized</title>
+ </head>
+ <body>
+  <h1>401 - Unauthorized</h1>
+ </body>
+</html>
+   Database: PostgreSQL running on localhost:5432
+   Files stored in: S3 bucket 'consultant-tracker-frontend-app'
+   Email reports from: sre.aibot@gmail.com
+
+📊 Management Commands:
+   Monitor: ./monitor.sh
+   Logs: pm2 logs consultant-tracker
+   Restart: pm2 restart consultant-tracker
+   Stop: pm2 stop consultant-tracker
+   Backup: sudo /usr/local/bin/backup-db.sh
+
+📅 Automated Features:
+   ✅ Daily email reports at 7:00 PM EST
+   ✅ Weekly email reports every Friday at 7:00 PM EST
+   ✅ Monthly email reports on last day of month at 7:00 PM EST
+   ✅ Daily database backups at 2:00 AM
+
+🔧 Next Steps:
+1. Verify your S3 bucket 'consultant-tracker-frontend-app' exists and is accessible
+2. Verify your SES email 'sre.aibot@gmail.com' is verified in AWS SES console
+3. Test the application by visiting the URL above
+4. Check logs with: pm2 logs consultant-tracker
+
+🚀 Your SVATech Consultant Tracker is now live!
+ubuntu@ip-100-20-10-123:~/AugConsultant$ pm2 status
+
+                        -------------
+
+__/\\\\\\\\\\\\\____/\\\\____________/\\\\____/\\\\\\\\\_____
+ _\/\\\/////////\\\_\/\\\\\\________/\\\\\\__/\\\///////\\\___
+  _\/\\\_______\/\\\_\/\\\//\\\____/\\\//\\\_\///______\//\\\__
+   _\/\\\\\\\\\\\\\/__\/\\\\///\\\/\\\/_\/\\\___________/\\\/___
+    _\/\\\/////////____\/\\\__\///\\\/___\/\\\________/\\\//_____
+     _\/\\\_____________\/\\\____\///_____\/\\\_____/\\\//________
+      _\/\\\_____________\/\\\_____________\/\\\___/\\\/___________
+       _\/\\\_____________\/\\\_____________\/\\\__/\\\\\\\\\\\\\\\_
+        _\///______________\///______________\///__\///////////////__
+
+
+                          Runtime Edition
+
+        PM2 is a Production Process Manager for Node.js applications
+                     with a built-in Load Balancer.
+
+                Start and Daemonize any application:
+                $ pm2 start app.js
+
+                Load Balance 4 instances of api.js:
+                $ pm2 start api.js -i 4
+
+                Monitor in production:
+                $ pm2 monitor
+
+                Make pm2 auto-boot at server restart:
+                $ pm2 startup
+
+                To go further checkout:
+                http://pm2.io/
+
+
+                        -------------
+
+[PM2] Spawning PM2 daemon with pm2_home=/home/ubuntu/.pm2
+[PM2] PM2 Successfully daemonized
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+ubuntu@ip-100-20-10-123:~/AugConsultant$ pm2 logs consultant-tracker --lines 20
+[TAILING] Tailing last 20 lines for [consultant-tracker] process (change the value with --lines option)
+^C
+ubuntu@ip-100-20-10-123:~/AugConsultant$ sudo netstat -tlnp | grep :5000
+sudo: netstat: command not found
+ubuntu@ip-100-20-10-123:~/AugConsultant$ curl http://localhost:5000
+curl: (7) Failed to connect to localhost port 5000 after 0 ms: Couldn't connect to server
+ubuntu@ip-100-20-10-123:~/AugConsultant$ sudo tail -f /var/log/nginx/error.log
+2025/08/11 17:08:19 [notice] 22815#22815: using inherited sockets from "5;6;"
+2025/08/11 17:34:41 [error] 26176#26176: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 152.208.7.167, server: _, request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "3.87.67.228"
+2025/08/11 17:34:48 [error] 26176#26176: *3 connect() failed (111: Connection refused) while connecting to upstream, client: 152.208.7.167, server: _, request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "3.87.67.228"
+2025/08/11 17:34:55 [error] 26176#26176: *5 connect() failed (111: Connection refused) while connecting to upstream, client: 152.208.7.167, server: _, request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "3.87.67.228"
+2025/08/11 17:35:43 [error] 26176#26176: *7 connect() failed (111: Connection refused) while connecting to upstream, client: 152.208.7.167, server: _, request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "3.87.67.228"

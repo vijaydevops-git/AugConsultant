@@ -1,0 +1,27 @@
+{
+  "apps": [{
+    "name": "consultant-tracker",
+    "script": "dist/index.js",
+    "instances": 1,
+    "exec_mode": "fork",
+    "env": {
+      "NODE_ENV": "production",
+      "PORT": "5000",
+      "DATABASE_URL": "postgresql://tracker_user:MonDad@2022!@localhost:5432/consultant_tracker",
+      "AWS_REGION": "us-east-1",
+      "S3_BUCKET_NAME": "consultant-tracker-frontend-app",
+      "S3_REGION": "us-east-1",
+      "SES_REGION": "us-east-1",
+      "SES_SENDER_EMAIL": "sre.aibot@gmail.com",
+      "REPORT_RECIPIENT_EMAILS": "sre.aibot@gmail.com",
+      "SESSION_SECRET": "ec2-session-secret-key-2024"
+    },
+    "log_file": "./logs/consultant-tracker.log",
+    "out_file": "./logs/consultant-tracker.out.log",
+    "error_file": "./logs/consultant-tracker.error.log",
+    "restart_delay": 1000,
+    "max_restarts": 10,
+    "watch": false,
+    "ignore_watch": ["node_modules", "logs", "uploads"]
+  }]
+}

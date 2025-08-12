@@ -1,0 +1,68 @@
+ubuntu@ip-100-20-10-123:~/AugConsultant$ cd /home/ubuntu/AugConsultant
+
+# Stop current process
+pm2 stop consultant-tracker
+pm2 delete consultant-tracker
+
+# Update the startup script with all required environment variables
+cat > start-app.sh << 'EOF'
+#!/bin/bash
+export DATABASE_URL='postgresql://tracker_user:MonDad@2022!@localhost:5432/consultant_tracker'
+export AWS_REGION='us-east-1'
+export S3_BUCKET_NAME='consultant-tracker-frontend-app'
+export S3_REGION='us-east-1'
+export SES_REGION='us-east-1'
+export SES_SENDER_EMAIL='sre.aibot@gmail.com'
+export REPORT_RECIPIENT_EMAILS='sre.aibot@gmail.com'
+export NODE_ENV='production'
+export PORT=5000
+
+# Required for Replit auth system (dummy values for EC2 deployment)
+export REPLIT_DOMAINS='3.87.67.228'
+export REPL_ID='dummy-ec2-deployment'
+export SESSION_SECRET='your-super-secret-session-key-change-this-in-production'
+echo "If successful, visit: http://3.87.67.228"er"
+[PM2] Applying action stopProcessId on app [consultant-tracker](ids: [ 0 ])
+[PM2] [consultant-tracker](0) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ consultant-tracker │ fork     │ 6    │ stopped   │ 0%       │ 0b       │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[PM2] Applying action deleteProcessId on app [consultant-tracker](ids: [ 0 ])
+[PM2] [consultant-tracker](0) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[PM2] Starting /home/ubuntu/AugConsultant/start-app.sh in fork_mode (1 instance)
+[PM2] Done.
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ consultant-tracker │ fork     │ 0    │ online    │ 0%       │ 3.4mb    │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[PM2] Saving current process list...
+[PM2] Successfully saved in /home/ubuntu/.pm2/dump.pm2
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ consultant-tracker │ fork     │ 0    │ online    │ 0%       │ 3.4mb    │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[TAILING] Tailing last 15 lines for [consultant-tracker] process (change the value with --lines option)
+/home/ubuntu/.pm2/logs/consultant-tracker-out.log last 15 lines:
+/home/ubuntu/.pm2/logs/consultant-tracker-error.log last 15 lines:
+0|consulta |     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+0|consulta |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|consulta |
+0|consulta | Node.js v20.19.4
+0|consulta | file:///home/ubuntu/AugConsultant/dist/index.js:1071
+0|consulta |   throw new Error("Environment variable REPLIT_DOMAINS not provided");
+0|consulta |         ^
+0|consulta |
+0|consulta | Error: Environment variable REPLIT_DOMAINS not provided
+0|consulta |     at file:///home/ubuntu/AugConsultant/dist/index.js:1071:9
+0|consulta |     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+0|consulta |     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+0|consulta |     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+0|consulta |
+0|consulta | Node.js v20.19.4

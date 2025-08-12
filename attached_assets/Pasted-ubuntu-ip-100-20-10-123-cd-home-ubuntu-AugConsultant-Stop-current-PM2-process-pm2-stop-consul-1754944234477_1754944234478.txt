@@ -1,0 +1,106 @@
+ubuntu@ip-100-20-10-123:~$ cd /home/ubuntu/AugConsultant
+
+# Stop current PM2 process
+pm2 stop consultant-tracker
+pm2 delete consultant-tracker
+
+# Make sure .env file exists with correct content
+cat > .env << 'EOF'
+DATABASE_URL=postgresql://tracker_user:MonDad@2022!@localhost:5432/consultant_tracker
+AWS_REGION=us-east-1
+S3_BUCKET_NAME=consultant-tracker-frontend-app
+S3_REGION=us-east-1
+SES_REGION=us-east-1
+SES_SENDER_EMAIL=sre.aibot@gmail.com
+REPORT_RECIPIENT_EMAILS=sre.aibot@gmail.com
+NODE_ENV=production
+PORT=5000
+EOF
+
+# Start PM2 with the correct built file (not npm start)
+pm2 start dist/index.js --name "consultant-tracker"
+pm2 save
+
+echo "Visit: http://3.87.67.228"ers 10
+[PM2] Applying action stopProcessId on app [consultant-tracker](ids: [ 0 ])
+[PM2] [consultant-tracker](0) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ consultant-tracker │ fork     │ 0    │ stopped   │ 0%       │ 0b       │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[PM2] Applying action deleteProcessId on app [consultant-tracker](ids: [ 0 ])
+[PM2] [consultant-tracker](0) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+-bash: .env: Permission denied
+[PM2] Starting /home/ubuntu/AugConsultant/dist/index.js in fork_mode (1 instance)
+[PM2] Done.
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ consultant-tracker │ fork     │ 0    │ online    │ 0%       │ 24.9mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[PM2] Saving current process list...
+[PM2] Successfully saved in /home/ubuntu/.pm2/dump.pm2
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ consultant-tracker │ fork     │ 0    │ online    │ 0%       │ 51.3mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[TAILING] Tailing last 10 lines for [consultant-tracker] process (change the value with --lines option)
+/home/ubuntu/.pm2/logs/consultant-tracker-out.log last 10 lines:
+/home/ubuntu/.pm2/logs/consultant-tracker-error.log last 10 lines:
+0|consulta | Error: DATABASE_URL must be set. Did you forget to provision a database?
+0|consulta |     at file:///home/ubuntu/AugConsultant/dist/index.js:240:9
+0|consulta |     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+0|consulta |     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+
+0|consultant-tracker  | Error: DATABASE_URL must be set. Did you forget to provision a database?
+0|consultant-tracker  |     at file:///home/ubuntu/AugConsultant/dist/index.js:240:9
+0|consultant-tracker  |     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+0|consultant-tracker  |     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+^C
+curl: (7) Failed to connect to localhost port 5000 after 0 ms: Couldn't connect to server
+Visit: http://3.87.67.228
+ubuntu@ip-100-20-10-123:~/AugConsultant$ cd /home/ubuntu/AugConsultant
+
+pm2 delete consultant-tracker
+
+# Start with explicit environment
+pm2 start dist/index.js \
+  --name "consultant-tracker" \
+  --env DATABASE_URL="postgresql://tracker_user:MonDad@2022!@localhost:5432/consultant_tracker" \
+  --env AWS_REGION="us-east-1" \
+  --env NODE_ENV="production" \
+  --env PORT="5000"
+
+pm2 save
+pm2 logs consultant-tracker
+[PM2] Applying action deleteProcessId on app [consultant-tracker](ids: [ 0 ])
+[PM2] [consultant-tracker](0) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+-bash: !@localhost: event not found
+[PM2] Starting /home/ubuntu/AugConsultant/dist/index.js in fork_mode (1 instance)
+[PM2] Done.
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ consultant-tracker │ fork     │ 0    │ online    │ 0%       │ 13.0mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[PM2] Saving current process list...
+[PM2] Successfully saved in /home/ubuntu/.pm2/dump.pm2
+[TAILING] Tailing last 15 lines for [consultant-tracker] process (change the value with --lines option)
+/home/ubuntu/.pm2/logs/consultant-tracker-out.log last 15 lines:
+/home/ubuntu/.pm2/logs/consultant-tracker-error.log last 15 lines:
+0|consulta | Error: DATABASE_URL must be set. Did you forget to provision a database?
+0|consulta |     at file:///home/ubuntu/AugConsultant/dist/index.js:240:9
+0|consulta |     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+0|consulta |     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+0|consulta | Error: DATABASE_URL must be set. Did you forget to provision a database?
+0|consulta |     at file:///home/ubuntu/AugConsultant/dist/index.js:240:9
+0|consulta |     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+0|consulta |     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)

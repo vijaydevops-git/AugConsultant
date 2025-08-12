@@ -1,0 +1,132 @@
+ubuntu@ip-100-20-10-123:~/AugConsultant$ cd /home/ubuntu/AugConsultant
+
+# Delete current process
+pm2 delete consultant-tracker
+
+# Create ecosystem file (this avoids permission issues)
+cat > ecosystem.config.js << 'EOF'
+module.exports = {
+  apps: [{
+    name: 'consultant-tracker',
+    script: 'dist/index.js',
+    env: {
+      NODE_ENV: 'production',
+      PORT: 5000,
+      DATABASE_URL: 'postgresql://tracker_user:MonDad@2022!@localhost:5432/consultant_tracker',
+      AWS_REGION: 'us-east-1',
+      S3_BUCKET_NAME: 'consultant-tracker-frontend-app',
+      S3_REGION: 'us-east-1',
+      SES_REGION: 'us-east-1',
+      SES_SENDER_EMAIL: 'sre.aibot@gmail.com',
+      REPORT_RECIPIENT_EMAILS: 'sre.aibot@gmail.com'
+    }
+  }]
+echo "If successful, visit: http://3.87.67.228"
+[PM2][ERROR] Process or Namespace consultant-tracker not found
+[PM2][ERROR] File ecosystem.config.js malformated
+ReferenceError: module is not defined
+    at file:///home/ubuntu/AugConsultant/ecosystem.config.js:1:1
+    at ModuleJobSync.runSync (node:internal/modules/esm/module_job:387:35)
+    at ModuleLoader.importSyncForRequire (node:internal/modules/esm/loader:323:47)
+    at loadESMFromCJS (node:internal/modules/cjs/loader:1371:24)
+    at Module._compile (node:internal/modules/cjs/loader:1511:5)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1572:16)
+    at Module.load (node:internal/modules/cjs/loader:1275:32)
+    at Module._load (node:internal/modules/cjs/loader:1096:12)
+    at Module.require (node:internal/modules/cjs/loader:1298:19)
+    at require (node:internal/modules/helpers:182:18)
+[PM2] Saving current process list...
+[PM2][WARN] PM2 is not managing any process, skipping save...
+[PM2][WARN] To force saving use: pm2 save --force
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[TAILING] Tailing last 10 lines for [consultant-tracker] process (change the value with --lines option)
+
+
+^C
+curl: (7) Failed to connect to localhost port 5000 after 0 ms: Couldn't connect to server
+If successful, visit: http://3.87.67.228
+ubuntu@ip-100-20-10-123:~/AugConsultant$ ^C
+ubuntu@ip-100-20-10-123:~/AugConsultant$ ^C
+ubuntu@ip-100-20-10-123:~/AugConsultant$ ^C
+ubuntu@ip-100-20-10-123:~/AugConsultant$ cd /home/ubuntu/AugConsultant
+
+# Check current user and permissions
+whoami
+ls -la
+
+# Make sure you own the directory
+sudo chown -R ubuntu:ubuntu /home/ubuntu/AugConsultant
+
+# Then try the ecosystem approach above
+ubuntu
+total 624
+drwxrwxr-x  11 ubuntu ubuntu   4096 Aug 11 20:32 .
+drwxr-x---   8 ubuntu ubuntu   4096 Aug 11 20:31 ..
+-rw-r--r--   1 root   root      695 Aug 11 17:34 .env
+drwxrwxr-x   8 ubuntu ubuntu   4096 Aug 11 16:59 .git
+-rw-rw-r--   1 ubuntu ubuntu  10340 Aug 11 16:59 AWS_DEPLOYMENT_GUIDE.md
+-rw-rw-r--   1 ubuntu ubuntu   5020 Aug 11 16:59 DEPLOYMENT_CHECKLIST.md
+-rw-rw-r--   1 ubuntu ubuntu   6126 Aug 11 16:59 MANUAL_INFRASTRUCTURE_CONFIG.md
+-rw-rw-r--   1 ubuntu ubuntu     30 Aug 11 16:59 README.md
+drwxrwxr-x   2 ubuntu ubuntu   4096 Aug 11 16:59 attached_assets
+drwxrwxr-x   3 ubuntu ubuntu   4096 Aug 11 16:59 client
+-rw-rw-r--   1 ubuntu ubuntu    459 Aug 11 16:59 components.json
+-rw-rw-r--   1 ubuntu ubuntu    131 Aug 11 16:59 cookies.txt
+-rw-rw-r--   1 ubuntu ubuntu   6327 Aug 11 16:59 deploy-instructions.md
+-rwxrwxr-x   1 ubuntu ubuntu   9738 Aug 11 17:32 deploy.sh
+drwxr-xr-x   3 root   root     4096 Aug 11 17:34 dist
+-rw-rw-r--   1 ubuntu ubuntu    325 Aug 11 16:59 drizzle.config.ts
+-rw-rw-r--   1 ubuntu ubuntu    508 Aug 11 20:32 ecosystem.config.js
+drwxr-xr-x 429 root   root    20480 Aug 11 17:33 node_modules
+-rw-rw-r--   1 ubuntu ubuntu 465540 Aug 11 17:33 package-lock.json
+-rw-rw-r--   1 ubuntu ubuntu   4119 Aug 11 16:59 package.json
+-rw-rw-r--   1 ubuntu ubuntu     80 Aug 11 16:59 postcss.config.js
+-rw-rw-r--   1 ubuntu ubuntu   9156 Aug 11 16:59 replit.md
+drwxrwxr-x   2 ubuntu ubuntu   4096 Aug 11 16:59 server
+drwxrwxr-x   2 ubuntu ubuntu   4096 Aug 11 16:59 shared
+-rw-rw-r--   1 ubuntu ubuntu   2627 Aug 11 16:59 tailwind.config.ts
+drwxrwxr-x   2 ubuntu ubuntu   4096 Aug 11 16:59 terraform
+-rw-rw-r--   1 ubuntu ubuntu    657 Aug 11 16:59 tsconfig.json
+drwxrwxr-x   2 ubuntu ubuntu   4096 Aug 11 16:59 uploads
+-rw-rw-r--   1 ubuntu ubuntu    971 Aug 11 16:59 vite.config.ts
+^C
+ubuntu@ip-100-20-10-123:~/AugConsultant$ cd /home/ubuntu/AugConsultant
+
+# Delete current process
+pm2 delete consultant-tracker
+
+# Create ecosystem file (this avoids permission issues)
+cat > ecosystem.config.js << 'EOF'
+module.exports = {
+  apps: [{
+    name: 'consultant-tracker',
+    script: 'dist/index.js',
+    env: {
+      NODE_ENV: 'production',
+      PORT: 5000,
+      DATABASE_URL: 'postgresql://tracker_user:MonDad@2022!@localhost:5432/consultant_tracker',
+      AWS_REGION: 'us-east-1',
+      S3_BUCKET_NAME: 'consultant-tracker-frontend-app',
+      S3_REGION: 'us-east-1',
+      SES_REGION: 'us-east-1',
+      SES_SENDER_EMAIL: 'sre.aibot@gmail.com',
+      REPORT_RECIPIENT_EMAILS: 'sre.aibot@gmail.com'
+    }
+  }]
+echo "If successful, visit: http://3.87.67.228"
+[PM2][ERROR] Process or Namespace consultant-tracker not found
+[PM2][ERROR] File ecosystem.config.js malformated
+ReferenceError: module is not defined
+    at file:///home/ubuntu/AugConsultant/ecosystem.config.js:1:1
+    at ModuleJobSync.runSync (node:internal/modules/esm/module_job:387:35)
+    at ModuleLoader.importSyncForRequire (node:internal/modules/esm/loader:323:47)
+    at loadESMFromCJS (node:internal/modules/cjs/loader:1371:24)
+    at Module._compile (node:internal/modules/cjs/loader:1511:5)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1572:16)
+    at Module.load (node:internal/modules/cjs/loader:1275:32)
+    at Module._load (node:internal/modules/cjs/loader:1096:12)
+    at Module.require (node:internal/modules/cjs/loader:1298:19)
+    at require (node:internal/modules/helpers:182:18)
+[PM2] Saving current process list...

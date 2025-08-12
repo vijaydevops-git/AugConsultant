@@ -1,0 +1,52 @@
+ubuntu@ip-100-20-10-123:~/AugConsultant$ cd /home/ubuntu/AugConsultant
+
+# Create JSON ecosystem file
+cat > ecosystem.config.json << 'EOF'
+{
+  "apps": [{
+    "name": "consultant-tracker",
+    "script": "dist/index.js",
+    "env": {
+      "NODE_ENV": "production",
+      "PORT": "5000",
+      "DATABASE_URL": "postgresql://tracker_user:MonDad@2022!@localhost:5432/consultant_tracker",
+      "AWS_REGION": "us-east-1",
+      "S3_BUCKET_NAME": "consultant-tracker-frontend-app",
+      "S3_REGION": "us-east-1",
+      "SES_REGION": "us-east-1",
+      "SES_SENDER_EMAIL": "sre.aibot@gmail.com",
+      "REPORT_RECIPIENT_EMAILS": "sre.aibot@gmail.com"
+    }
+  }]
+}
+EOF
+
+echo "If successful, visit: http://3.87.67.228"
+[PM2][WARN] Applications consultant-tracker not running, starting...
+[PM2] App [consultant-tracker] launched (1 instances)
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ consultant-tracker │ fork     │ 0    │ online    │ 0%       │ 640.0kb  │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[PM2] Saving current process list...
+[PM2] Successfully saved in /home/ubuntu/.pm2/dump.pm2
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ consultant-tracker │ fork     │ 0    │ online    │ 37.5%    │ 54.8mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[TAILING] Tailing last 10 lines for [consultant-tracker] process (change the value with --lines option)
+/home/ubuntu/.pm2/logs/consultant-tracker-out.log last 10 lines:
+/home/ubuntu/.pm2/logs/consultant-tracker-error.log last 10 lines:
+0|consulta |     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+0|consulta |     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+0|consulta | Error: DATABASE_URL must be set. Did you forget to provision a database?
+0|consulta |     at file:///home/ubuntu/AugConsultant/dist/index.js:240:9
+0|consulta |     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+0|consulta |     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+0|consulta | Error: DATABASE_URL must be set. Did you forget to provision a database?
+0|consulta |     at file:///home/ubuntu/AugConsultant/dist/index.js:240:9
+0|consulta |     at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+0|consulta |     at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+
